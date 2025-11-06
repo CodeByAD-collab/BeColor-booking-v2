@@ -469,7 +469,7 @@
         // STEP B: The computer sends the information to be saved in your calendar database
         try {
             // This is the address of your backend "kitchen" that you deployed on Render
-            const backendAddress = 'http://localhost:3001/api/reservations'; // <-- Make sure this is your Render URL!
+            const backendAddress = 'https://becolor-api.onrender.com/api/reservations'; // <-- Make sure this is your Render URL!
 
             const response = await fetch(backendAddress, {
                 method: 'POST',
