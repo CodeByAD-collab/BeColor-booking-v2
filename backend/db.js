@@ -1,18 +1,18 @@
 const { Pool } = require('pg');
-require('dotenv').config(); // Charge les variables du fichier .env
+require('dotenv').config();
 
-// Crée un pool de connexions.
-// Il lira automatiquement la variable d'environnement DATABASE_URL que vous avez mise dans .env
-const pool = new Pool({
+// Smart configuration for the database connection
+const isProduction = process.env.NODE_ENV === 'production';
+
+const connectionConfig = {
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false // Requis pour se connecter à Neon depuis un environnement local
-    }
-});
+    // Use SSL only when in production (when it's on Render)
+    ssl: isProduction ? { rejectUnauthorized: false } : false
+};
 
-// Exporte un objet avec une méthode 'query' qui utilise le pool
+const pool = new Pool(connectionConfig);
+
 module.exports = {
     query: (text, params) => pool.query(text, params),
-    // Ajout d'une méthode pour fermer le pool, utile pour les scripts
     end: () => pool.end()
 };
